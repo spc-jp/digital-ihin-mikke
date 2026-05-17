@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>デジタル遺品みっけ｜スマホの中を、家族に残す</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#223670; --navy-deep:#1a2a5e;
+  --gold:#D0A900; --gold-soft:#F5E27A;
+  --cream:#FBF8F1; --warm:#F0EDE6;
+  --ink:#1A1A2E; --ink-mid:#4A4A6A; --ink-soft:#7A7A9A;
+  --green:#2E7D5E; --green-bg:#E8F5EF;
+  --red:#C0392B; --white:#fff;
+  --line:#E3DECF;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Noto Sans JP',sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  line-height:1.85;
+  font-size:18px;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:680px;margin:0 auto;padding:0 16px 140px;}
+
+/* ===== ヘッダー ===== */
+header{
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-deep) 70%,#2d1f6e 100%);
+  color:var(--white);
+  text-align:center;
+  padding:26px 16px 22px;
+}
+header .badge{
+  display:inline-block;background:var(--gold);color:var(--navy);
+  font-family:'Noto Serif JP',serif;font-weight:700;font-size:13px;
+  padding:5px 16px;border-radius:18px;letter-spacing:.08em;margin-bottom:12px;
+}
+header h1{
+  font-family:'Noto Serif JP',serif;font-size:26px;font-weight:700;line-height:1.5;
+}
+header p{font-size:15px;color:#D6DCEF;margin-top:8px;}
+
+/* ===== 安心バナー ===== */
+.privacy{
+  background:var(--green-bg);
+  border-bottom:1px solid #CDE7DA;
+  color:#1f5e46;
+  text-align:center;
+  font-size:15px;
+  padding:13px 16px;
+  font-weight:500;
+}
+
+/* ===== 共通 ===== */
+.card{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:22px 20px;
+  margin:18px 0;
+  box-shadow:0 4px 16px rgba(34,54,112,.05);
+}
+.sec-title{
+  font-family:'Noto Serif JP',serif;
+  font-size:22px;font-weight:700;color:var(--navy);
+  margin:30px 0 6px;line-height:1.5;
+}
+.sec-lead{font-size:16px;color:var(--ink-mid);margin-bottom:6px;}
+
+.btn{
+  display:block;width:100%;border:none;cursor:pointer;
+  font-family:'Noto Sans JP',sans-serif;font-weight:700;
+  font-size:19px;padding:18px;border-radius:14px;
+  transition:transform .12s,box-shadow .12s;line-height:1.4;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn:active{transform:scale(.985);}
+.btn-main{background:var(--gold);color:var(--navy);box-shadow:0 6px 16px rgba(208,169,0,.32);}
+.btn-navy{background:var(--navy);color:var(--white);}
+.btn-ghost{background:var(--white);color:var(--navy);border:2px solid var(--navy);}
+.btn-soft{background:var(--warm);color:var(--ink-mid);font-size:16px;padding:14px;font-weight:500;}
+.btn + .btn{margin-top:12px;}
+
+.hide{display:none !important;}
+
+/* ===== ホーム：カテゴリ ===== */
+.namebox{margin:6px 0 4px;}
+.namebox label{display:block;font-size:15px;color:var(--ink-mid);margin-bottom:6px;font-weight:500;}
+.namebox input{
+  width:100%;font-size:18px;padding:14px;border:1.5px solid var(--line);
+  border-radius:12px;font-family:inherit;background:var(--cream);
+}
+.namebox input:focus{outline:none;border-color:var(--gold);background:#fff;}
+
+.cat{
+  display:flex;align-items:center;gap:14px;
+  background:var(--white);border:1px solid var(--line);
+  border-radius:16px;padding:18px 18px;margin:13px 0;cursor:pointer;
+  transition:border-color .15s,transform .12s;
+}
+.cat:active{transform:scale(.99);}
+.cat .ic{
+  font-size:30px;width:54px;height:54px;flex:none;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--warm);border-radius:14px;
+}
+.cat .tx{flex:1;}
+.cat .tx b{font-size:18px;color:var(--navy);font-weight:700;display:block;}
+.cat .tx span{font-size:14px;color:var(--ink-soft);}
+.cat .st{
+  font-size:13px;font-weight:700;padding:5px 12px;border-radius:20px;flex:none;
+  background:var(--warm);color:var(--ink-soft);
+}
+.cat .st.done{background:var(--green-bg);color:var(--green);}
+
+/* ===== 項目入力 ===== */
+.backbar{
+  display:flex;align-items:center;gap:8px;
+  color:var(--navy);font-weight:700;font-size:16px;
+  background:none;border:none;cursor:pointer;
+  padding:14px 4px 6px;font-family:inherit;
+}
+.item{
+  background:var(--white);border:1px solid var(--line);
+  border-radius:14px;padding:16px;margin:14px 0;
+}
+.item.on{border-color:var(--gold);background:#FFFDF4;}
+.chk{display:flex;align-items:center;gap:12px;cursor:pointer;}
+.chk input{width:26px;height:26px;flex:none;accent-color:var(--gold);}
+.chk .nm{font-size:18px;font-weight:700;color:var(--ink);}
+.fields{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);}
+.fields .fl{margin-bottom:14px;}
+.fields .fl:last-child{margin-bottom:0;}
+.fields label{display:block;font-size:14px;font-weight:700;color:var(--ink-mid);margin-bottom:6px;}
+.fields input,.fields textarea{
+  width:100%;font-size:17px;padding:12px;border:1.5px solid var(--line);
+  border-radius:10px;font-family:inherit;background:var(--cream);
+}
+.fields input:focus,.fields textarea:focus{outline:none;border-color:var(--gold);background:#fff;}
+.fields textarea{min-height:64px;resize:vertical;line-height:1.7;}
+.radios{display:flex;flex-wrap:wrap;gap:8px;}
+.radios label{
+  display:flex;align-items:center;gap:7px;font-size:15px;font-weight:500;
+  background:var(--cream);border:1.5px solid var(--line);border-radius:10px;
+  padding:10px 13px;cursor:pointer;color:var(--ink);flex:1 1 44%;margin:0;
+}
+.radios label.sel{border-color:var(--gold);background:#FFFBEC;font-weight:700;}
+.radios input{width:20px;height:20px;accent-color:var(--gold);flex:none;}
+.note{
+  background:#FFF6E0;border:1px solid #F0DDA8;border-radius:12px;
+  padding:13px 15px;font-size:14px;color:#7a5d12;margin:14px 0;line-height:1.7;
+}
+.addbtn{
+  width:100%;background:var(--cream);border:2px dashed var(--line);
+  color:var(--ink-mid);font-size:16px;font-weight:700;padding:14px;
+  border-radius:12px;cursor:pointer;font-family:inherit;margin-top:6px;
+}
+
+/* ===== 完成メモ ===== */
+.memo{
+  background:var(--white);border:1px solid var(--line);
+  border-radius:14px;padding:26px 22px;margin:16px 0;
+}
+.memo h2{
+  font-family:'Noto Serif JP',serif;text-align:center;color:var(--navy);
+  font-size:24px;border-bottom:3px solid var(--gold);padding-bottom:12px;margin-bottom:6px;
+}
+.memo .meta{text-align:center;font-size:14px;color:var(--ink-soft);margin-bottom:20px;}
+.memo .grp{margin:22px 0;}
+.memo .grp h3{
+  font-size:17px;color:var(--white);background:var(--navy);
+  padding:8px 14px;border-radius:8px;font-weight:700;
+}
+.memo .row{
+  border-bottom:1px solid var(--line);padding:12px 4px;font-size:16px;
+}
+.memo .row b{color:var(--navy);}
+.memo .row .wish{
+  display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;
+  border-radius:14px;background:var(--warm);color:var(--ink-mid);margin-left:6px;
+}
+.memo .row .wish.keep{background:var(--green-bg);color:var(--green);}
+.memo .row .wish.del{background:#FBE6E3;color:var(--red);}
+.memo .row .sub{font-size:14px;color:var(--ink-mid);margin-top:4px;}
+.memo .msg{
+  background:var(--cream);border-left:4px solid var(--gold);
+  padding:16px;border-radius:8px;margin-top:8px;font-size:16px;
+  white-space:pre-wrap;line-height:1.9;
+}
+.msgbox{
+  width:100%;font-size:17px;padding:14px;border:1.5px solid var(--line);
+  border-radius:12px;font-family:inherit;background:var(--cream);
+  min-height:120px;resize:vertical;line-height:1.85;
+}
+
+/* ===== モーダル ===== */
+.ov{
+  position:fixed;inset:0;background:rgba(26,26,46,.55);
+  display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;
+}
+.modal{
+  background:var(--white);border-radius:18px;padding:28px 22px;
+  max-width:420px;width:100%;text-align:center;
+}
+.modal h3{font-family:'Noto Serif JP',serif;color:var(--navy);font-size:21px;margin-bottom:10px;}
+.modal p{font-size:16px;color:var(--ink-mid);margin-bottom:18px;line-height:1.8;}
+.modal .small{font-size:13px;color:var(--ink-soft);margin-top:14px;}
+
+/* ===== フッター ===== */
+footer{text-align:center;font-size:13px;color:var(--ink-soft);padding:24px 16px;}
+footer .mt{font-family:'Noto Serif JP',serif;color:var(--navy);font-size:15px;margin-top:8px;}
+
+.savetip{
+  text-align:center;font-size:13px;color:var(--green);
+  background:var(--green-bg);border-radius:10px;padding:8px;margin:14px 0;
+}
+
+/* ===== 印刷 ===== */
+@media print{
+  header,.privacy,.backbar,.btn,.btn-area,.savetip,footer,.note-screen,.modal,.ov,.editmsg{display:none !important;}
+  body{background:#fff;font-size:13px;}
+  .wrap{padding:0;max-width:100%;}
+  .memo{border:none;box-shadow:none;padding:0;margin:0;}
+  .memo h2{font-size:20px;}
+  .memo .grp h3{background:#223670 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .memo .row{page-break-inside:avoid;}
+}
+@media (max-width:430px){
+  body{font-size:17px;}
+  header h1{font-size:22px;}
+  .radios label{flex:1 1 100%;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">みっけシリーズ｜デジタル終活</div>
+  <h1>デジタル遺品みっけ</h1>
+  <p>スマホの中の大切なことを、家族に残しておきましょう</p>
+</header>
+
+<div class="privacy">🔒 入力した内容は、このスマホの中だけに保存されます。外部には送信されません。</div>
+
+<div class="wrap">
+
+<!-- ====== ホーム画面 ====== -->
+<div id="home">
+  <div class="card">
+    <div class="sec-title">はじめましょう 😊</div>
+    <p class="sec-lead">下のリストを、上から順にタップしていくだけで大丈夫です。途中でやめても、自動で保存されます。</p>
+    <div class="namebox" style="margin-top:16px;">
+      <label>あなたのお名前（任意・空欄でもOK）</label>
+      <input id="ownerName" type="text" placeholder="例：山田 太郎" autocomplete="off">
+    </div>
+  </div>
+
+  <div class="sec-title">スマホの中を、6つにわけて整理します</div>
+  <p class="sec-lead">気になるところからで構いません。「使っていない」項目はそのままで大丈夫です。</p>
+  <div id="catList"></div>
+
+  <div class="savetip" id="saveTip">✅ ここまでの内容は自動で保存されています</div>
+
+  <button class="btn btn-main" onclick="goMemo()">📄 整理メモを作成する</button>
+  <button class="btn btn-soft" onclick="confirmReset()">入力した内容をすべて消す</button>
+</div>
+
+<!-- ====== カテゴリ入力画面 ====== -->
+<div id="catView" class="hide">
+  <button class="backbar" onclick="goHome()">← もどる（自動保存されます）</button>
+  <div class="sec-title" id="catTitle"></div>
+  <p class="sec-lead" id="catLead"></p>
+
+  <div class="note">
+    💡 大切なお願い：パスワードそのものはここに書かないでください。「通帳と一緒のメモ」「机の引き出し」など、<b>保管場所</b>を書いておくと、ご家族が安全に確認できます。
+  </div>
+
+  <div id="itemList"></div>
+  <button class="addbtn" onclick="addCustom()">＋ リストにない項目を自分で追加する</button>
+  <div style="height:14px;"></div>
+  <button class="btn btn-navy" onclick="goHome()">この分類を保存してホームへ戻る</button>
+</div>
+
+<!-- ====== メモ完成画面 ====== -->
+<div id="memoView" class="hide">
+  <button class="backbar no-print" onclick="goHome()">← もどって修正する</button>
+
+  <div class="editmsg card">
+    <div class="sec-title" style="margin-top:0;">ご家族へのメッセージ ✍️</div>
+    <p class="sec-lead">財産のことだけでなく、伝えたい想いや感謝の言葉も残せます。空欄でも構いません。</p>
+    <textarea id="familyMsg" class="msgbox" placeholder="例）長い間ありがとう。サブスクはすべて解約してください。写真はみんなで見てくれたら嬉しいです。"></textarea>
+    <div style="height:14px;"></div>
+    <button class="btn btn-navy" onclick="renderMemo()">メッセージを反映する</button>
+  </div>
+
+  <div id="memoPaper" class="memo"></div>
+
+  <div class="btn-area">
+    <button class="btn btn-main" onclick="doPrint()">🖨️ 印刷・PDFで保存する</button>
+    <button class="btn btn-ghost" onclick="goHome()">内容を修正する</button>
+  </div>
+  <div class="note note-screen">
+    📌 印刷したメモは、通帳や保険証券と一緒に保管しておくのがおすすめです。スマホの方は「印刷」画面で「PDFに保存」を選ぶと、データとしても残せます。
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>
+  デジタル遺品みっけ ｜ 運営：Smile Plus Consulting<br>
+  <span class="mt">「考えるを、ひとりにしない」</span>
+</footer>
+
+<!-- ====== モーダル：消去確認 ====== -->
+<div id="resetOv" class="ov hide">
+  <div class="modal">
+    <h3>本当に消してよいですか？</h3>
+    <p>入力した内容がすべて消えます。<br>この操作は元に戻せません。</p>
+    <button class="btn btn-soft" style="background:#FBE6E3;color:var(--red);font-weight:700;" onclick="doReset()">はい、すべて消します</button>
+    <button class="btn btn-soft" onclick="closeReset()" style="margin-top:10px;">やめておく</button>
+  </div>
+</div>
+
+<!-- ====== モーダル：Pro案内 ====== -->
+<div id="upOv" class="ov hide">
+  <div class="modal">
+    <h3>無料の印刷は3回までです 😊</h3>
+    <p>ここまで作った内容は消えません。<br>くり返し印刷・PDF保存をお使いになりたい方は、続けてご利用いただけるプランをご用意しています。</p>
+    <a class="btn btn-main" id="liteLink" href="#" target="_blank" rel="noopener" style="text-decoration:none;">Lite版を見る（買い切り）</a>
+    <a class="btn btn-navy" id="proLink" href="#" target="_blank" rel="noopener" style="text-decoration:none;margin-top:10px;">Pro版を見る（月額）</a>
+    <button class="btn btn-soft" onclick="closeUp()" style="margin-top:10px;">閉じる</button>
+    <p class="small">※ 画面の内容はスクリーンショットで保存できます</p>
+  </div>
+</div>
+
+<script>
+/* ===== 設定（YoshiBonがここを書き換え） ===== */
+var LITE_URL = "https://note.com/＜あなたのnote＞";   // ← Lite版 note買い切りURL
+var PRO_URL  = "https://＜あなたのStripe決済リンク＞"; // ← Pro版 Stripe URL
+var FREE_PRINT = 3;
+
+/* ===== データ定義 ===== */
+var CATS = [
+  { id:"sub",  ic:"💳", name:"サブスク・定額サービス", lead:"毎月お金が引き落とされているサービスです。解約しないと、亡くなったあとも課金が続くことがあります。",
+    items:["Amazonプライム","動画配信（Netflix・U-NEXTなど）","音楽配信（Spotify・Amazon Musicなど）","電子書籍・雑誌（dマガジンなど）","新聞・ニュースの有料購読","スマホアプリの月額課金","その他の定額サービス"] },
+  { id:"sns",  ic:"💬", name:"SNS・連絡アプリ", lead:"亡くなったあと「消してほしい」「そのままでよい」など、ご希望を残しておくとご家族が迷いません。",
+    items:["LINE","X（旧Twitter）","Instagram","Facebook","YouTube","その他のSNS"] },
+  { id:"mail", ic:"📧", name:"メール", lead:"各種サービスの連絡が届く大事な入口です。どのメールを使っているか書いておきましょう。",
+    items:["Gmail（Google）","Yahoo!メール","プロバイダのメール（So-net・OCNなど）","携帯会社のメール（docomo・auなど）","その他のメール"] },
+  { id:"cloud",ic:"📸", name:"写真・データの保管先", lead:"大切な写真や動画がどこにあるか分からないと、ご家族が取り出せません。",
+    items:["iCloud（iPhone・Apple）","Googleフォト","Amazon Photos","パソコンの中・外付けハードディスク","その他のクラウド保存"] },
+  { id:"money",ic:"🏦", name:"ネット銀行・証券・電子マネー", lead:"気づかれないと、お金が眠ったままになることがあります。口座の有無だけでも残しましょう。",
+    items:["ネット銀行（楽天銀行・住信SBIなど）","ネット証券（SBI・楽天証券など）","電子マネー・PayPay・QR決済","暗号資産（仮想通貨）","ポイント（楽天・dポイントなど）","その他の金融サービス"] },
+  { id:"device",ic:"📱", name:"スマホ・パソコン本体", lead:"そもそも端末が開けないと、中身を確認できません。開け方を残しておくと安心です。",
+    items:["スマホのロック解除（暗証番号・指紋など）","パソコンのログイン","スマホのキャリア契約（解約手続き用）"] },
+];
+var WISHES = [
+  {v:"keep", t:"引き継いでほしい"},
+  {v:"del",  t:"削除してほしい"},
+  {v:"asis", t:"そのままでよい"},
+  {v:"unknown", t:"まだ決めていない"},
+];
+
+/* ===== 保存（localStorage・preview等で失敗しても落とさない） ===== */
+var KEY="dgmikke_v1";
+var DATA={ name:"", msg:"", entries:{}, custom:{} };
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(DATA)); }catch(e){} }
+function load(){
+  try{ var s=localStorage.getItem(KEY); if(s){ var o=JSON.parse(s); if(o&&typeof o==="object"){ DATA=Object.assign(DATA,o); } } }catch(e){}
+}
+function getPrintCount(){ try{ return parseInt(localStorage.getItem("dgmikke_pc")||"0",10); }catch(e){ return 0; } }
+function addPrintCount(){ try{ localStorage.setItem("dgmikke_pc", String(getPrintCount()+1)); }catch(e){} }
+
+/* ===== 状態 ===== */
+var curCat=null;
+
+/* ===== ホーム描画 ===== */
+function renderHome(){
+  document.getElementById("ownerName").value = DATA.name || "";
+  var html="";
+  CATS.forEach(function(c){
+    var n = countDone(c.id);
+    var st = n>0 ? '<span class="st done">'+n+'件 記入ずみ</span>' : '<span class="st">これから</span>';
+    html += '<div class="cat" onclick="openCat(\''+c.id+'\')">'+
+      '<div class="ic">'+c.ic+'</div>'+
+      '<div class="tx"><b>'+c.name+'</b><span>タップして確認・記入する</span></div>'+
+      st+'</div>';
+  });
+  document.getElementById("catList").innerHTML = html;
+}
+function countDone(catId){
+  var e=DATA.entries[catId]||{}; var n=0;
+  for(var k in e){ if(e[k] && e[k].use){ n++; } }
+  return n;
+}
+
+/* ===== カテゴリ画面 ===== */
+function openCat(id){
+  curCat=id;
+  var c=getCat(id);
+  document.getElementById("catTitle").textContent=c.ic+" "+c.name;
+  document.getElementById("catLead").textContent=c.lead;
+  renderItems();
+  show("catView");
+  window.scrollTo(0,0);
+}
+function getCat(id){ for(var i=0;i<CATS.length;i++){ if(CATS[i].id===id) return CATS[i]; } }
+function allItems(id){
+  var base=getCat(id).items.slice();
+  var cu=DATA.custom[id]||[];
+  return base.concat(cu);
+}
+function renderItems(){
+  var id=curCat, items=allItems(id), e=DATA.entries[id]||{};
+  var html="";
+  items.forEach(function(name,idx){
+    var key="i"+idx;
+    var d=e[key]||{};
+    var on=d.use?true:false;
+    html+='<div class="item'+(on?' on':'')+'" id="it_'+idx+'">';
+    html+='<label class="chk"><input type="checkbox" '+(on?'checked':'')+' onchange="toggleUse('+idx+',this.checked)"><span class="nm">'+esc(name)+'</span></label>';
+    html+='<div class="fields '+(on?'':'hide')+'" id="fl_'+idx+'">';
+    html+='<div class="fl"><label>ID・メールアドレス・口座番号など（任意）</label><input type="text" value="'+esc(d.id||"")+'" oninput="setF('+idx+',\'id\',this.value)" placeholder="例：yamada@gmail.com"></div>';
+    html+='<div class="fl"><label>家族へのご希望</label><div class="radios">';
+    WISHES.forEach(function(w){
+      var sel=(d.wish===w.v)?' sel':'';
+      html+='<label class="'+(sel?'sel':'')+'"><input type="radio" name="w'+idx+'" '+(d.wish===w.v?'checked':'')+' onchange="setF('+idx+',\'wish\',\''+w.v+'\')">'+w.t+'</label>';
+    });
+    html+='</div></div>';
+    html+='<div class="fl"><label>保管場所・ひとことメモ（パスワードは書かないでください）</label><textarea oninput="setF('+idx+',\'memo\',this.value)" placeholder="例：パスワードは通帳と一緒のメモに記載／解約は家族に任せます">'+esc(d.memo||"")+'</textarea></div>';
+    html+='</div></div>';
+  });
+  document.getElementById("itemList").innerHTML=html;
+}
+function toggleUse(idx,checked){
+  ensure(curCat,"i"+idx);
+  DATA.entries[curCat]["i"+idx].use=checked;
+  save();
+  var it=document.getElementById("it_"+idx);
+  var fl=document.getElementById("fl_"+idx);
+  if(checked){ it.classList.add("on"); fl.classList.remove("hide"); }
+  else{ it.classList.remove("on"); fl.classList.add("hide"); }
+}
+function setF(idx,field,val){
+  ensure(curCat,"i"+idx);
+  DATA.entries[curCat]["i"+idx][field]=val;
+  if(field==="wish"){ renderItems(); }
+  save();
+}
+function ensure(cat,key){
+  if(!DATA.entries[cat]) DATA.entries[cat]={};
+  if(!DATA.entries[cat][key]) DATA.entries[cat][key]={use:false,id:"",wish:"",memo:""};
+}
+function addCustom(){
+  var name=prompt("追加したい項目の名前を入力してください\n（例：マッチングアプリ／メルカリ など）");
+  if(!name) return;
+  name=name.trim(); if(!name) return;
+  if(!DATA.custom[curCat]) DATA.custom[curCat]=[];
+  DATA.custom[curCat].push(name);
+  save();
+  renderItems();
+}
+
+/* ===== メモ生成 ===== */
+function goMemo(){
+  DATA.name=document.getElementById("ownerName").value;
+  save();
+  document.getElementById("familyMsg").value=DATA.msg||"";
+  renderMemo();
+  show("memoView");
+  window.scrollTo(0,0);
+}
+function renderMemo(){
+  DATA.msg=document.getElementById("familyMsg").value;
+  DATA.name=document.getElementById("ownerName").value;
+  save();
+  var today=new Date();
+  var ds=today.getFullYear()+"年"+(today.getMonth()+1)+"月"+today.getDate()+"日";
+  var nm=DATA.name?esc(DATA.name):"＿＿＿＿＿＿＿＿";
+  var h='<h2>わたしのデジタル遺品メモ</h2>';
+  h+='<div class="meta">お名前：'+nm+'　／　作成日：'+ds+'</div>';
+  var any=false;
+  CATS.forEach(function(c){
+    var items=allItems(c.id), e=DATA.entries[c.id]||{}, rows="";
+    items.forEach(function(name,idx){
+      var d=e["i"+idx]; if(!d||!d.use) return;
+      any=true;
+      var w=wishLabel(d.wish);
+      rows+='<div class="row"><b>'+esc(name)+'</b>'+w;
+      if(d.id) rows+='<div class="sub">ID等：'+esc(d.id)+'</div>';
+      if(d.memo) rows+='<div class="sub">メモ：'+esc(d.memo)+'</div>';
+      rows+='</div>';
+    });
+    if(rows){ h+='<div class="grp"><h3>'+c.ic+' '+c.name+'</h3>'+rows+'</div>'; }
+  });
+  if(!any){ h+='<div class="row" style="text-align:center;color:#7A7A9A;">まだ記入された項目がありません。<br>ホームに戻って、使っているサービスにチェックを入れてください。</div>'; }
+  if(DATA.msg && DATA.msg.trim()){
+    h+='<div class="grp"><h3>💌 家族へのメッセージ</h3><div class="msg">'+esc(DATA.msg)+'</div></div>';
+  }
+  h+='<div style="text-align:center;font-size:13px;color:#7A7A9A;margin-top:24px;">デジタル遺品みっけ ｜ Smile Plus Consulting</div>';
+  document.getElementById("memoPaper").innerHTML=h;
+}
+function wishLabel(v){
+  if(v==="keep") return '<span class="wish keep">引き継いでほしい</span>';
+  if(v==="del")  return '<span class="wish del">削除してほしい</span>';
+  if(v==="asis") return '<span class="wish">そのままでよい</span>';
+  return '<span class="wish">未定</span>';
+}
+
+/* ===== 印刷（無料3回ゲート） ===== */
+function doPrint(){
+  var c=getPrintCount();
+  if(c>=FREE_PRINT){ openUp(); return; }
+  addPrintCount();
+  window.print();
+}
+function openUp(){
+  document.getElementById("liteLink").href=LITE_URL;
+  document.getElementById("proLink").href=PRO_URL;
+  document.getElementById("upOv").classList.remove("hide");
+}
+function closeUp(){ document.getElementById("upOv").classList.add("hide"); }
+
+/* ===== 画面切替 ===== */
+function show(id){
+  ["home","catView","memoView"].forEach(function(v){
+    document.getElementById(v).classList.add("hide");
+  });
+  document.getElementById(id).classList.remove("hide");
+}
+function goHome(){ renderHome(); show("home"); window.scrollTo(0,0); }
+
+/* ===== 消去 ===== */
+function confirmReset(){ document.getElementById("resetOv").classList.remove("hide"); }
+function closeReset(){ document.getElementById("resetOv").classList.add("hide"); }
+function doReset(){
+  DATA={ name:"", msg:"", entries:{}, custom:{} };
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  closeReset(); goHome();
+}
+
+/* ===== ユーティリティ ===== */
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+document.getElementById("ownerName").addEventListener("input",function(){ DATA.name=this.value; save(); });
+
+/* ===== 起動 ===== */
+load();
+renderHome();
+</script>
+</body>
+</html>
