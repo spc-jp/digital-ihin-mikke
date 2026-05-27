@@ -220,10 +220,55 @@ footer .mt{font-family:'Noto Serif JP',serif;color:var(--navy);font-size:15px;ma
   background:var(--green-bg);border-radius:10px;padding:8px;margin:14px 0;
 }
 
+/* ===== トライアルバナー（上部固定） ===== */
+.tbanner{
+  position:fixed;left:0;right:0;top:0;z-index:40;
+  padding:13px 16px;text-align:center;
+  font-family:'Noto Sans JP',sans-serif;font-weight:700;
+  font-size:16px;line-height:1.45;
+  box-shadow:0 4px 18px rgba(26,26,46,.16);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  border-bottom:1px solid rgba(0,0,0,.08);
+  user-select:none;
+}
+.tbanner .ic{font-size:20px;line-height:1;}
+.tbanner .ct{font-size:14px;font-weight:700;background:rgba(255,255,255,.92);
+  color:var(--navy);padding:6px 14px;border-radius:18px;margin-left:6px;}
+.tbanner.free{background:linear-gradient(90deg,#F5E27A 0%,var(--gold) 100%);color:var(--navy);}
+.tbanner.warn{background:var(--navy);color:var(--gold-soft);cursor:pointer;}
+.tbanner.warn:active{transform:scale(.99);}
+.tbanner.pro{background:var(--green-bg);color:var(--green);font-size:14px;padding:9px 16px;border-bottom:1px solid #CDE7DA;}
+.tbanner .arr{font-size:18px;}
+.tbanner .num{
+  display:inline-block;background:var(--navy);color:var(--gold-soft);
+  padding:2px 10px;border-radius:14px;font-size:14px;margin:0 4px;
+}
+/* バナー分の上部余白 */
+body{padding-top:56px;}
+
+/* ===== 認証パネル ===== */
+.unlock{
+  background:var(--cream);border:1px solid var(--line);
+  border-radius:12px;padding:14px;margin-top:14px;
+}
+.unlock label{display:block;font-size:14px;color:var(--ink-mid);font-weight:700;margin-bottom:6px;}
+.unlock input{
+  width:100%;font-size:17px;padding:12px;border:1.5px solid var(--line);
+  border-radius:10px;font-family:inherit;background:var(--white);
+  text-align:center;letter-spacing:.05em;
+}
+.unlock input:focus{outline:none;border-color:var(--gold);}
+.unlock .hint{font-size:12px;color:var(--ink-soft);margin-top:8px;line-height:1.6;}
+.divider{
+  text-align:center;margin:18px 0 8px;color:var(--ink-soft);font-size:13px;
+  display:flex;align-items:center;gap:10px;
+}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line);}
+
 /* ===== 印刷 ===== */
 @media print{
-  header,.privacy,.backbar,.btn,.btn-area,.savetip,footer,.note-screen,.modal,.ov,.editmsg{display:none !important;}
-  body{background:#fff;font-size:13px;}
+  header,.privacy,.backbar,.btn,.btn-area,.savetip,footer,.note-screen,.modal,.ov,.editmsg,.tbanner{display:none !important;}
+  body{background:#fff;font-size:13px;padding-top:0;}
   .wrap{padding:0;max-width:100%;}
   .memo{border:none;box-shadow:none;padding:0;margin:0;}
   .memo h2{font-size:20px;}
@@ -311,6 +356,9 @@ footer .mt{font-family:'Noto Serif JP',serif;color:var(--navy);font-size:15px;ma
 
 </div><!-- /wrap -->
 
+<!-- ====== トライアルバナー（常時固定表示） ====== -->
+<div id="tbanner" class="tbanner free" onclick="bannerClick()"></div>
+
 <footer>
   デジタル遺品みっけ ｜ 運営：Smile Plus Consulting<br>
   <span class="mt">「考えるを、ひとりにしない」</span>
@@ -326,23 +374,40 @@ footer .mt{font-family:'Noto Serif JP',serif;color:var(--navy);font-size:15px;ma
   </div>
 </div>
 
-<!-- ====== モーダル：Pro案内 ====== -->
+<!-- ====== モーダル：購入・認証 ====== -->
 <div id="upOv" class="ov hide">
   <div class="modal">
-    <h3>無料の印刷は3回までです 😊</h3>
+    <h3>無料体験は3回までです 😊</h3>
     <p>ここまで作った内容は消えません。<br>くり返し印刷・PDF保存をお使いになりたい方は、続けてご利用いただけるプランをご用意しています。</p>
-    <a class="btn btn-main" id="liteLink" href="#" target="_blank" rel="noopener" style="text-decoration:none;">Lite版を見る（買い切り）</a>
-    <a class="btn btn-navy" id="proLink" href="#" target="_blank" rel="noopener" style="text-decoration:none;margin-top:10px;">Pro版を見る（月額）</a>
+    <a class="btn btn-main" id="proLink" href="#" target="_blank" rel="noopener" style="text-decoration:none;">🛒 ご購入はこちら（Stripe）</a>
+    <a class="btn btn-ghost" id="liteLink" href="#" target="_blank" rel="noopener" style="text-decoration:none;margin-top:10px;">📘 買い切り版を見る（note）</a>
+
+    <div class="divider">ご購入済みの方</div>
+    <div class="unlock">
+      <label for="passInput">🔑 認証コードを入力</label>
+      <input id="passInput" type="text" inputmode="text" autocomplete="off" placeholder="例：mikke-xxxx">
+      <div class="hint">ご購入後のメールに記載されているコードを入力してください。<br>（QRコードからもアクセスできます）</div>
+    </div>
+    <button class="btn btn-navy" onclick="tryUnlock()" style="margin-top:12px;">✅ 認証する</button>
     <button class="btn btn-soft" onclick="closeUp()" style="margin-top:10px;">閉じる</button>
-    <p class="small">※ 画面の内容はスクリーンショットで保存できます</p>
+    <p class="small">※ 画面の内容はスクリーンショットでも保存できます</p>
   </div>
 </div>
 
 <script>
 /* ===== 設定（YoshiBonがここを書き換え） ===== */
-var LITE_URL = "https://note.com/＜あなたのnote＞";   // ← Lite版 note買い切りURL
-var PRO_URL  = "https://＜あなたのStripe決済リンク＞"; // ← Pro版 Stripe URL
+var LITE_URL = "https://note.com/＜あなたのnote＞";   // ← 買い切り版 note URL
+var PRO_URL  = "https://buy.stripe.com/5kQdR8eP883b90X9J2cV20T"; // ← Stripe決済リンク
+// 認証コードは SHA-256 ハッシュ化して保存（HTMLにはハッシュのみ＝盗み見不可）
+// パスワードを変えたい時は、ターミナルで↓を実行してハッシュを差し替え
+//   echo -n "新しいパスワード" | sha256sum
+var UNLOCK_HASH = "b83bae38155d895eb862826ce8c33432aa270beb2d7c97107305ee9529cd7e8f";
 var FREE_PRINT = 3;
+/*
+  ※ APIなし版のため、ハッシュ照合はブラウザ内（crypto.subtle）で行います。
+  　 平文パスワードはHTML内に存在しません。
+  　 さらに強固にする場合は、みっけシリーズ標準の Cloudflare Workers 照合へ移行可能です。
+*/
 
 /* ===== データ定義 ===== */
 var CATS = [
@@ -512,16 +577,76 @@ function wishLabel(v){
   return '<span class="wish">未定</span>';
 }
 
-/* ===== 印刷（無料3回ゲート） ===== */
+/* ===== 認証状態 ===== */
+function isUnlocked(){ try{ return localStorage.getItem("dgmikke_unlock")==="1"; }catch(e){ return false; } }
+function setUnlocked(){ try{ localStorage.setItem("dgmikke_unlock","1"); }catch(e){} }
+function tryUnlock(){
+  var v=(document.getElementById("passInput").value||"").trim();
+  if(!v){ alert("認証コードを入力してください"); return; }
+  if(!window.crypto || !window.crypto.subtle){
+    alert("お使いの環境では認証ができません。\nブラウザを最新版にしてからお試しください。");
+    return;
+  }
+  var enc=new TextEncoder().encode(v);
+  window.crypto.subtle.digest("SHA-256", enc).then(function(buf){
+    var arr=Array.from(new Uint8Array(buf));
+    var hex=arr.map(function(b){ return ("00"+b.toString(16)).slice(-2); }).join("");
+    if(hex===UNLOCK_HASH){
+      setUnlocked();
+      closeUp();
+      updateBanner();
+      alert("✅ 認証できました\nありがとうございます。\nこれから何度でも印刷・PDF保存をお使いいただけます。");
+    }else{
+      alert("⚠️ 認証コードが一致しません\nメールに記載のコードをもう一度ご確認ください。\n（大文字・小文字は区別されます）");
+    }
+  }).catch(function(){
+    alert("認証処理でエラーが発生しました。もう一度お試しください。");
+  });
+}
+
+/* ===== トライアルバナー ===== */
+function updateBanner(){
+  var b=document.getElementById("tbanner");
+  if(!b) return;
+  b.classList.remove("free","warn","pro");
+  if(isUnlocked()){
+    b.classList.add("pro");
+    b.innerHTML='<span class="ic">✅</span><span>製品版でご利用中　ありがとうございます</span>';
+    return;
+  }
+  var c=getPrintCount();
+  var left=FREE_PRINT-c;
+  if(c<=0){
+    b.classList.add("free");
+    b.innerHTML='<span class="ic">🎁</span><span>今なら<span class="num">3回</span>まで無料でお試しいただけます（登録不要）</span>';
+  }else if(left>0){
+    b.classList.add("free");
+    b.innerHTML='<span class="ic">🎁</span><span>無料体験　残り<span class="num">'+left+'回</span>（全'+FREE_PRINT+'回）</span>';
+  }else{
+    b.classList.add("warn");
+    b.innerHTML='<span class="ic">⚠️</span><span>無料体験が終了しました</span><span class="ct">ご購入はこちら</span><span class="arr">→</span>';
+  }
+}
+function bannerClick(){
+  if(isUnlocked()) return;
+  if(getPrintCount()>=FREE_PRINT){ openUp(); }
+}
+
+/* ===== 印刷（無料3回ゲート＋認証バイパス） ===== */
 function doPrint(){
+  if(isUnlocked()){ window.print(); return; }
   var c=getPrintCount();
   if(c>=FREE_PRINT){ openUp(); return; }
   addPrintCount();
+  updateBanner();
   window.print();
 }
 function openUp(){
-  document.getElementById("liteLink").href=LITE_URL;
+  var liteEl=document.getElementById("liteLink");
+  if(LITE_URL.indexOf("＜")>=0){ liteEl.style.display="none"; }
+  else{ liteEl.href=LITE_URL; liteEl.style.display=""; }
   document.getElementById("proLink").href=PRO_URL;
+  document.getElementById("passInput").value="";
   document.getElementById("upOv").classList.remove("hide");
 }
 function closeUp(){ document.getElementById("upOv").classList.add("hide"); }
@@ -551,6 +676,7 @@ document.getElementById("ownerName").addEventListener("input",function(){ DATA.n
 /* ===== 起動 ===== */
 load();
 renderHome();
+updateBanner();
 </script>
 </body>
 </html>
